@@ -3,5 +3,9 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-<h1>Update</h1>
+<h1>Supprimer un ingrédient</h1>
+	{{ form_start(ingredientForm)}}
+	{{ form_rest(ingredientForm)}}
+	<input type="submit" value="Supprimer" class="btn btn-primary">
+	{{ form_end(ingredientForm)}}
 {% endblock %}

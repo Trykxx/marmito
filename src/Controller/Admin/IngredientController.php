@@ -59,26 +59,21 @@ class IngredientController extends AbstractController
         return $this->render('admin/ingredient/update.html.twig', ['ingredientForm' => $form]);
     }
 
-    #[Route('/delete', name: 'delete')]
-    public function delete(): Response
+    #[Route('/delete/{id}', name: 'delete')]
+    public function delete(Request $request,Ingredient $ingredient,EntityManagerInterface $em)
     {
-        return $this->render('admin/ingredient/delete.html.twig');
+        $form = $this->createForm(IngredientType::class, $ingredient);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        $em->remove($ingredient);
+            $em->flush();
+
+            $this->addFlash('success','Ingredient supprimé !');
+
+            return $this->redirectToRoute('admin_ingredient_index');
+        }
+        return $this->render('admin/ingredient/delete.html.twig', ['ingredientForm' => $form]);
     }
 }
-
-// public function update(Category $category, Request $request)
-//     {
-//         $form = $this->createForm(CategoryType::class, $category);
-
-//         $form->handleRequest($request);
-
-//         if ($form->isSubmitted() && $form->isValid()) {
-//             $this->em->flush();
-//             return $this->redirectToRoute('admin_category_index');
-//         }
-
-//         return $this->render('admin/category/update.html.twig', [
-//             'formCategory' => $form
-//         ]);
-
-//     }
