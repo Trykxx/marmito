@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update{% endblock %}
+
+{% block body %}
+	<h1>Modifier un ingredient</h1>
+
+	{{ form_start(ingredientForm)}}
+	{{ form_rest(ingredientForm)}}
+	<input type="submit" value="Modifier" class="btn btn-primary">
+	{{ form_end(ingredientForm)}}
+{% endblock %}

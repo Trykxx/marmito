@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IngredientController!
+{% endblock %}
+
+{% block body %}
+	<h1>Accueil Admin</h1>
+
+	<table class='table table-striped'>
+    <thead>
+    <th>Produit</th>
+    <th>Prix</th>
+    <th>Date de création</th>
+    <th>Modifier</th>
+    </thead>
+		{% for ingredient in ingredients %}
+			<tr>
+				<td>{{ingredient.name}}</td>
+				<td>{{ingredient.price }}</td>
+				<td>{{ingredient.createdAt | date("d/m/Y")}}</td>
+				<td><a href="{{path('admin_ingredient_update',{id:ingredient.id})}}" class='btn btn-primary'>Modidier</a></td>
+
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}
