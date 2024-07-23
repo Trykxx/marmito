@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[Route('/admin/recipe', name: 'admin_recipe_')]
 class RecipeController extends AbstractController
@@ -54,6 +55,7 @@ class RecipeController extends AbstractController
     {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
