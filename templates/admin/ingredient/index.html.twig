@@ -7,20 +7,29 @@
 	<h1>Accueil Admin</h1>
 
 	<table class='table table-striped'>
-    <thead>
-    <th>Produit</th>
-    <th>Prix</th>
-    <th>Date de création</th>
-    <th>Modifier</th>
-    <th>Supprimer</th>
-    </thead>
+		<thead>
+			<th>Produit</th>
+			<th>Prix</th>
+			<th>Date de création</th>
+			<th>Modifier</th>
+			<th>Supprimer</th>
+		</thead>
 		{% for ingredient in ingredients %}
 			<tr>
-				<td>{{ingredient.name}}</td>
+				<td>
+					<a href="{{path("admin_ingredient_show",{id:ingredient.id})}}">{{ingredient.name}}</a>
+				</td>
 				<td>{{ingredient.price }}</td>
 				<td>{{ingredient.createdAt | date("d/m/Y")}}</td>
-				<td><a href="{{path('admin_ingredient_update',{id:ingredient.id})}}" class='btn btn-primary'>Modidier</a></td>
-				<td><a href="{{path('admin_ingredient_delete',{id:ingredient.id})}}" class='btn btn-danger'>Supprimer</a></td>
+				<td>
+					<a href="{{path('admin_ingredient_update',{id:ingredient.id})}}" class='btn btn-primary'>Modidier</a>
+				</td>
+				<td>
+					<form action="{{path('admin_ingredient_delete', { 'id': ingredient.id }) }}" method="POST">
+					<input type="hidden" name='_method' value='DELETE'>
+						<button type="submit" class="btn btn-danger">Supprimer</button>
+					</form>
+				</td>
 
 			</tr>
 		{% endfor %}

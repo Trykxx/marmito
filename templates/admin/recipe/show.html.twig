@@ -1,0 +1,14 @@
+{% block body %}
+	<h1>{{recipe.name}}</h1>
+
+    <p><strong>Description :</strong> {{recipe.description}}</p>
+    <p><strong>Temps de préparation :</strong> {{recipe.temps}}</p>
+    <p><strong>Nombre de personnes :</strong> {{recipe.personnes}}</p>
+    <p><strong>Niveau de difficulté :</strong> {{recipe.difficulty}}</p>
+    <p><strong>Date de création :</strong> {{recipe.createdAt | date("d/m/Y")}}</p>
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RecipeController!
+{% endblock %}
+
+{% block body %}
+	<h1>Recettes</h1>
+	<table class='table table-striped'>
+
+		<thead>
+			<th>Nom</th>
+			<th>Description</th>
+			<th>Prix</th>
+			<th>Temps de préparation</th>
+			<th>Nombre de personnes</th>
+			<th>Niveau de difficulté</th>
+			<th>Date de création</th>
+			<th>Modifier</th>
+			<th>Supprimer</th>
+		</thead>
+		{% for recipe in recipes %}
+			<tr>
+				<td>
+					<a href="{{path("admin_recipe_show",{id:recipe.id})}}">{{recipe.name}}</a>
+				</td>
+				<td>{{recipe.description }}</td>
+				<td>{{recipe.price }}</td>
+				<td>{{recipe.temps }}</td>
+				<td>{{recipe.personnes }}</td>
+				<td>{{recipe.difficulty }}</td>
+				<td>{{recipe.createdAt | date("d/m/Y")}}</td>
+				<td>
+					<a href="{{path('admin_recipe_update',{id:recipe.id})}}" class='btn btn-primary'>Modidier</a>
+				</td>
+				<td>
+					<form action="{{path('admin_recipe_delete', { 'id': recipe.id }) }}" method="POST">
+						<input type="hidden" name='_method' value='DELETE'>
+						<button type="submit" class="btn btn-danger">Supprimer</button>
+					</form>
+				</td>
+
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}
