@@ -2,11 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\Ingredient;
 use App\Entity\Recipe;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -57,10 +60,22 @@ class RecipeType extends AbstractType
                 'label' => 'Favori',
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::PRE_SUBMIT, $this->autoSlug(...)) // ... declarer al fonction sans l'éxecuter
-        ;
+            ->addEventListener(FormEvents::PRE_SUBMIT, $this->autoSlug(...)) // ... declarer la fonction sans l'éxecuter
+            ->add('ingredients', EntityType::class, [
+                'class' => Ingredient::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true
+            ])
+            ->add('thumbnailFile',FileType::class,[
+                'label' => 'Image (PNG, JPG)',
+                'mapped'=>false
+            ]);
     }
 
+    // on cree le slug ici et pas dans le contolleur car un controlleur doit pas faire de validation ni affichage, messages etc.
+    // Sa responsabilité est de recuperer des donnees et les renvoyer a la vue.
+    // single event
     public function autoSlug(PreSubmitEvent $event)
     {
         $data = $event->getData(); // recupere un tableau avec les valeurs du formulaire

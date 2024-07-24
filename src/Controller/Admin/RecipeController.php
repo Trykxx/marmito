@@ -24,7 +24,7 @@ class RecipeController extends AbstractController
         return $this->render('admin/recipe/index.html.twig', ['recipes' => $recipe]);
     }
 
-    #[Route('/create', name: 'create', methods:['post','get'])]
+    #[Route('/create', name: 'create', methods: ['post', 'get'])]
     public function create(Request $request, EntityManagerInterface $em)
     {
         $recipe = new Recipe();
@@ -32,6 +32,16 @@ class RecipeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('thumbnailFile')->getData();
+            if ($file) {
+
+                $filedir = $this->getParameter('kernel.project_dir') . '/public/img/thumbnails';
+                $fileName = $recipe->getSlug() . '.' . $file->getClientOriginalExtension();
+
+                $file->move($filedir, $fileName);
+                $recipe->setfileName($fileName);
+            }
+
             $em->persist($recipe);
             $em->flush();
 
@@ -40,7 +50,7 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('admin_recipe_index');
         }
 
-        return $this->render('admin/recipe/create.html.twig',['recipeForm'=>$form]);
+        return $this->render('admin/recipe/create.html.twig', ['recipeForm' => $form]);
     }
 
     #[Route('/detail/{id}', name: 'show')]
@@ -58,6 +68,7 @@ class RecipeController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em->flush();
 
             $this->addFlash('success', 'Recette modifié !');
@@ -68,7 +79,7 @@ class RecipeController extends AbstractController
         return $this->render('admin/recipe/update.html.twig', ['recipeForm' => $form]);
     }
 
-    #[Route('/delete/{id}', name:'delete', methods:'DELETE')]
+    #[Route('/delete/{id}', name: 'delete', methods: 'DELETE')]
     public function delete(Recipe $recipe, EntityManagerInterface $em)
     {
         $em->remove($recipe);
@@ -78,5 +89,4 @@ class RecipeController extends AbstractController
 
         return $this->redirectToRoute('admin_recipe_index');
     }
-
 }

@@ -82,6 +82,9 @@ class Recipe
     #[ORM\ManyToMany(targetEntity: Ingredient::class)]
     private Collection $ingredients;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fileName = null;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
@@ -244,6 +247,18 @@ class Recipe
     public function removeIngredient(Ingredient $ingredient): static
     {
         $this->ingredients->removeElement($ingredient);
+
+        return $this;
+    }
+
+    public function getfileName(): ?string
+    {
+        return $this->fileName;
+    }
+
+    public function setfileName(?string $fileName): static
+    {
+        $this->fileName = $fileName;
 
         return $this;
     }
